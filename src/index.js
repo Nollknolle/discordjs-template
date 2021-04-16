@@ -3,9 +3,12 @@
 const inquirer = require("inquirer");
 const wget = require("wget");
 const unzipper = require("unzipper");
-const path = require("path");
 const fs = require("fs");
 const colors = require("colors");
+const { exec } = require("child_process");
+const pckjson = require("../package.json");
+
+const choices_list = ["Setup", "Create command", "Remove .zip file"];
 
 function run() {
   inquirer
@@ -14,16 +17,16 @@ function run() {
         type: "list",
         name: "run",
         message: "Choose your option",
-        choices: ["Setup", "Create Command", "Deleting .zip File"],
+        choices: choices_list,
       },
     ])
     .then(async (answers) => {
-      if (answers.run === "Setup") {
+      if (answers.run === choices_list[0]) {
         await runSetup();
-      } else if (answers.run === "Create Command") {
-        create();
-      } else if (answers.run === "Deleting .zip File") {
-        unlink(`${process.cwd()}/latest.zip`);
+      } else if (answers.run === choices_list[1]) {
+        await createCommand();
+      } else if (answers.run === choices_list[2]) {
+        await unlink("/latest.zip");
       }
     });
 }
@@ -31,58 +34,82 @@ function run() {
 run();
 
 async function runSetup() {
-  const download = wget.download(
-    "https://nollknolle.github.io/discord.bot.template/latest.zip",
-    `${process.cwd()}/latest.zip`
-  );
-
-  download.on("end", () => {
-    fs.createReadStream(`${process.cwd()}/latest.zip`).pipe(
-      unzipper.Extract({ path: `${process.cwd()}` })
+  try {
+    const download = wget.download(
+      `${pckjson.repo}/latest.zip`,
+      `${process.cwd()}/latest.zip`
     );
-    console.log(colors.green("Setup finished"));
-  });
 
-  //download.on("error", console.log(colors.red("Error while downloading")));
+    download.on("end", async () => {
+      await fs
+        .createReadStream(`${process.cwd()}/latest.zip`)
+        .pipe(unzipper.Extract({ path: `${process.cwd()}` }));
+      console.log(
+        colors.green(
+          "Setup finished.\nI created a template file for you in commands/ :)\n" +
+            "Please run:"
+        )
+      );
+      console.log(colors.magenta("npm i discord.js"));
+    });
+
+    download.on("error", (err_msg) => {
+      console.log(
+        colors.red("Error while downloading\nError Message: " + err_msg)
+      );
+    });
+  } catch (error) {
+    this.err();
+  }
 }
 
-//Unlinks zip file
 async function unlink(path) {
-  if (fs.existsSync(path)) {
-    fs.unlink(path, (err) => {
-      if (err) {
-        console.error(err);
+  if (fs.existsSync(process.cwd() + path)) {
+    fs.unlink(process.cwd() + path, (error) => {
+      if (error) {
+        this.err();
         return;
       } else console.log(colors.green("File deleted"));
     });
-  } else console.log(colors.yellow(".zip File does not exits"));
+  } else console.log(colors.yellow("No .zip file found"));
 }
 
-async function create() {
-  try {
-    if (!fs.existsSync(`${process.cwd()}/commands`)) {
-      console.log(colors.red("Non existing commands folder!"));
-      return;
-    }
+async function createCommand() {
+  console.log(colors.yellow("In development!"));
+  return;
 
-    if (!fs.existsSync(`${process.cwd()}/commands/template.js`)) {
-      console.log(colors.red("Non existing templates file!"));
-      return;
-    }
+  // try {
+  //   if (!fs.existsSync(`${process.cwd()}/commands`)) {
+  //     console.log(colors.red("Non existing commands folder!"));
+  //     return;
+  //   }
 
-    const answ = await inquirer.prompt({
-      type: "input",
-      name: "create",
-      message: "Choose your command file name",
-    });
+  //   if (!fs.existsSync(`${process.cwd()}/commands/template.js`)) {
+  //     console.log(colors.red("Non existing templates file!"));
+  //     return;
+  //   }
 
-    fs.copyFile(
-      `${process.cwd()}/commands/template.js`,
-      `${process.cwd()}/commands/${answ.create}.js`
-    );
+  //   const answ = await inquirer.prompt({
+  //     type: "input",
+  //     name: "create",
+  //     message: "Choose your command file name",
+  //   });
 
-    console.log(colors.green("File copied!"));
-  } catch (error) {
-    console.log(colors.red("Error while creating"));
-  }
+  //   fs.copyFile(
+  //     `${process.cwd()}/commands/template.js`,
+  //     `${process.cwd()}/commands/${answ.create}.js`
+  //   );
+
+  //   console.log(colors.green("File copied!"));
+  // } catch (error) {
+  //   console.log(colors.red("Error while creating"));
+  // }
+}
+
+function err() {
+  console.log(
+    colors.red(
+      `Error while processing.\nPlease create issue.\n${pckjson.bugs.url}`
+    )
+  );
 }

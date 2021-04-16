@@ -1,13 +1,12 @@
 {
-  "name": "@nlmyr/testpackage",
-  "version": "1.0.8",
-  "description": "",
+  "name": "@nlmyr/discordjs-template",
+  "version": "0.0.1",
+  "description": "Discord.JS Bot Template in a few clicks.",
   "main": "./src/index.js",
   "bin": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,5 +14,20 @@
     "inquirer": "^8.0.0",
     "unzipper": "^0.10.11",
     "wget": "^0.0.1"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Nollknolle/discordjs-template/issues"
+  },
+  "homepage": "https://github.com/Nollknolle/discordjs-template#readme",
+  "repo": "https://nollknolle.github.io/discordjs-template",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nollknolle/discord.bot.template.git"
+  },
+  "keywords": [
+    "Discord.JS",
+    "Bot",
+    "Template",
+    "Discord"
+  ]
 }

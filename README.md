@@ -1,2 +1,3 @@
-# discordjs-template
-A simple DiscordJs Bot Template
+# DiscordJS Bot Template Generator
+
+A simple DiscordJS bot template generator with CLI integration.
