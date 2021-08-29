@@ -1,6 +1,6 @@
 {
   "name": "@nlmyr/discordjs-template",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Discord.JS Bot Template in a few clicks.",
   "main": "./src/index.js",
   "bin": "./src/index.js",

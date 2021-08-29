@@ -51,6 +51,11 @@ async function runSetup() {
         )
       );
       console.log(colors.magenta("npm i discord.js"));
+      console.log(
+        colors.red(
+          "Move all files from latest in root directory and delete latest/"
+        )
+      );
     });
 
     download.on("error", (err_msg) => {
