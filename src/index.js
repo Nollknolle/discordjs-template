@@ -46,7 +46,7 @@ async function runSetup() {
         .pipe(unzipper.Extract({ path: `${process.cwd()}` }));
       console.log(
         colors.green(
-          "Setup finished.\nI created a template file for you in commands/ :)\n" +
+          "Setup finished.\n- There is a template in commands/\n- New commands does only supports name, description and (options) [Use discord.js docs for documentation]\n- Please look in the config file in config/Config.js\n" +
             "Please run:"
         )
       );
