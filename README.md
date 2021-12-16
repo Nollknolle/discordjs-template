@@ -26,7 +26,7 @@ npx @nlmyr/discordjs-template
 
 Creates you the necessary files for a functional DiscordJS bot v13. Execute the shown bash command in the console and enter only your token in **config/Config.js** and deploy your first Slash Command with **!deplyguild**.
 
-- Note: This version only works with Guild base Slash Commands. Global Slash commands updated in newer version.
+Now global Slash commands with **!deployglobal**.
 
 ### Create Command
 
